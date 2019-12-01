@@ -1,0 +1,37 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>TriggerScan</title>
+    <script>
+        function startScan()
+        {
+            var xhttp = new XMLHttpRequest();
+            document.getElementById("status").textContent = "Scanning...";
+
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200)
+                {
+                    document.getElementById("status").textContent = this.responseText;
+                }
+            };
+            xhttp.open("GET", "/scan", true);
+            xhttp.send();
+        }
+    </script>
+    <style>
+        body * {
+            width: 80%;
+            display: block;
+            margin: auto;
+        }
+        button {
+            font-size: 12vmin;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="startScan();">Start Scan</button>
+    <br>
+    <span id="status" style="display: block; margin:auto"></span>
+</body>
+</html>

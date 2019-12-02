@@ -63,20 +63,20 @@ namespace TriggerScan.Resources {
         /// <summary>
         ///   Looks up a localized string similar to &lt;html&gt;
         ///&lt;head&gt;
-        ///    &lt;meta charset=&quot;UTF-8&quot;&gt;
         ///    &lt;title&gt;TriggerScan&lt;/title&gt;
-        ///    &lt;script language=&quot;javascript&quot;&gt;
-        ///        function onclick()
+        ///    &lt;script&gt;
+        ///        function startScan()
         ///        {
         ///            var xhttp = new XMLHttpRequest();
-        ///            xhttp.onreadystatechange = function () {
-        ///                if (this.readyState == 4 &amp;&amp; this.status == 200)
-        ///                {
-        ///                    document.getElementById(&quot;status&quot;).textContent = this.responseText;
-        ///                }
+        ///            document.getElementById(&quot;status&quot;).textContent = &quot;Scanning...&quot;;
+        ///            document.getElementById(&quot;starter&quot;).disabled = true;
+        ///
+        ///            var source = new EventSource(&quot;/scan&quot;);
+        ///            source.onmessage = function (event) {
+        ///                document.getElementById(&quot;status&quot;).textContent += event.data;
         ///            };
-        ///            xhttp.open(&quot;GET&quot;, &quot;/scan&quot;, true);
-        ///       [rest of string was truncated]&quot;;.
+        ///        }
+        ///    &lt;/scrip [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string index {
             get {

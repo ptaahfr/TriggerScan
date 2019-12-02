@@ -113,7 +113,7 @@ namespace TriggerScan
 
                         httpListener_.Start();
 
-                        logger.Log("Listening on port: 80");
+                        logger.Log($"Listening on port: {settings.Port}");
 
                         for (;;)
                         {

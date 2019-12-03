@@ -17,33 +17,49 @@ namespace TriggerScan
         public MainForm()
         {
             InitializeComponent();
-            syncContext_ = SynchronizationContext.Current; 
+            syncContext_ = SynchronizationContext.Current;
+        }
+
+        static readonly int WM_QUERYENDSESSION = 0x11;
+        bool systemShutdown_ = false;
+
+        protected override void WndProc(ref System.Windows.Forms.Message m)
+        {
+            if (m.Msg == WM_QUERYENDSESSION)
+            {
+                systemShutdown_ = true;
+            }
+
+            base.WndProc(ref m);
+
         }
 
         public void Log(string message)
         {
             syncContext_.Post(delegate
             {
-                while (logListBox_.Items.Count > 256)
-                    logListBox_.Items.RemoveAt(0);
+                foreach (var line in message.Replace("\r\n", "\n").Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    while (logListBox_.Items.Count > 256)
+                        logListBox_.Items.RemoveAt(0);
 
-                logListBox_.SelectedIndex = logListBox_.Items.Add(message);
+                    logListBox_.SelectedIndex = logListBox_.Items.Add(line);
+                }
             }, null);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            e.Cancel = true;
-            WindowState = FormWindowState.Minimized;
-        }
+            if (systemShutdown_)
+            {
+                systemShutdown_ = false;
+                return;
+            }
 
-        public event EventHandler BeforeClose;
-
-        private void closeButton__Click(object sender, EventArgs e)
-        {
-            closeButton_.Enabled = false;
-            BeforeClose?.Invoke(this, e);
-            this.Dispose();
+            if (MessageBox.Show(null, $"Are you sure you want to close {Application.ProductName} ?", MessageBoxButtons.YesNo) == DialogResult.No)
+            {
+                e.Cancel = true;
+            }
         }
     }
 }

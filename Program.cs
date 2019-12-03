@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System.Linq;
+using System.Windows.Forms;
 
 namespace TriggerScan
 {
@@ -7,10 +8,17 @@ namespace TriggerScan
     {
         static void Main(string[] args)
         {
-            var form = new MainForm();
-            var server = new Server(form);
-            form.BeforeClose += delegate { server.Dispose(); };
-            Application.Run(form);
+            if (args.Length > 0 && args[0] == "/SCAN")
+            {
+                Scanner.ProcessGo(args.Skip(1).ToArray());
+            }
+            else
+            {
+                var form = new MainForm();
+                var server = new Server(form);
+                form.Disposed += (s, e) => server.Dispose();
+                Application.Run(form);
+            }
         }
     }
 }

@@ -15,7 +15,6 @@ namespace TriggerScan
     class Server : IDisposable
     {
         ManualResetEvent finishRequest_ = new ManualResetEvent(false);
-        ManualResetEvent finished_ = new ManualResetEvent(false);
         Task task_;
         HttpListener httpListener_;
         string lastMessage_;
@@ -77,7 +76,7 @@ namespace TriggerScan
                 context.Response.AddHeader("Cache-control", "no-cache");
                 using (var file = File.OpenRead(scanner.LastProductionFileName))
                 {
-                    file.CopyTo(context.Response.OutputStream);
+                    file.CopyTo(context.Response.OutputStream, 256*1024);
                 }
             }
             else
@@ -93,7 +92,6 @@ namespace TriggerScan
             task_ = Task.Factory.StartNew(() =>
             {
                 var scanner = new Scanner();
-
 
                 scanner.LogMessage += (s, e) =>
                 {
@@ -160,15 +158,18 @@ namespace TriggerScan
                 }
 
                 scanner.Dispose();
-                finished_.Set();
             });
         }
 
         public void Dispose()
         {
-            httpListener_.Stop();
+            try
+            {
+                httpListener_.Stop();
+            }
+            catch (Exception) { }
             finishRequest_.Set();
-            finished_.WaitOne();
+            task_.Wait();
         }
     }
 }

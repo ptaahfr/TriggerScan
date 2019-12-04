@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Text;
@@ -45,6 +46,7 @@ namespace TriggerScan
             };
             onMessage = (s, e) => sendMessage(e.Message);
 
+            // Default response
             context.Response.StatusCode = 200;
             if (context.Request.RawUrl == "/")
             {
@@ -56,12 +58,15 @@ namespace TriggerScan
             }
             else if (context.Request.RawUrl == "/scan")
             {
-                context.Response.StatusCode = 200;
-                context.Response.ContentType = "text/plain";
                 scanner.Go(settings.Device, settings.DestPath, settings.Dpi, settings.WidthMM, settings.HeightMM);
-
-                var data = Encoding.UTF8.GetBytes($"OK\t\n");
-                context.Response.OutputStream.Write(data, 0, data.Length);
+            }
+            else if (context.Request.RawUrl == "/isrebootallowed")
+            {
+                context.Response.StatusCode = settings.AllowReboot ? 200 : 403;
+            }
+            else if (settings.AllowReboot && context.Request.RawUrl == "/reboot")
+            {
+                Process.Start("shutdown", "-r -t 0");
             }
             else if (context.Request.RawUrl == "/status")
             {

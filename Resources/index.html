@@ -10,12 +10,26 @@
                     document.getElementById("lastproduction").src = "/lastproduction#" + new Date();
                 }
             };
+
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/isrebootallowed", true);
+            xhttp.onreadystatechange = function (e) {
+                if (xhttp.readyState === 4 && xhttp.status === 200) {
+                    document.getElementById("reboot").className = "";
+                }
+            };
+            xhttp.send();
         };
 
-        function startScan()
-        {
+        function startScan() {
             var xhttp = new XMLHttpRequest();
             xhttp.open("GET", "/scan");
+            xhttp.send();
+        }
+
+        function reboot() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.open("GET", "/reboot");
             xhttp.send();
         }
     </script>
@@ -28,6 +42,9 @@
         button {
             font-size: 12vmin;
         }
+        .invisible {
+            display: none;
+        }
     </style>
 </head>
 <body onload="onLoad();">
@@ -35,6 +52,7 @@
     <br>
     <span id="status"></span>
     <br>
-    <img id="lastproduction">
+    <img id="lastproduction" style="min-height: 100vmax">
+    <button id="reboot" onclick="reboot();" class="invisible">Reboot</button>
 </body>
 </html>

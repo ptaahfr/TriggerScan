@@ -94,5 +94,29 @@ namespace TriggerScan.Properties {
                 this["HeightMM"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\\\one\\Scan\\Release")]
+        public string UpdatePath {
+            get {
+                return ((string)(this["UpdatePath"]));
+            }
+            set {
+                this["UpdatePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AllowReboot {
+            get {
+                return ((bool)(this["AllowReboot"]));
+            }
+            set {
+                this["AllowReboot"] = value;
+            }
+        }
     }
 }

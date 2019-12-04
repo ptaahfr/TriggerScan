@@ -20,5 +20,11 @@
     <Setting Name="HeightMM" Type="System.Double" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
+    <Setting Name="UpdatePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\one\Scan\Release</Value>
+    </Setting>
+    <Setting Name="AllowReboot" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

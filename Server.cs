@@ -75,7 +75,7 @@ namespace TriggerScan
                 sendMessage(lastMessage_);
                 return true; // Keep stream opened
             }
-            else if (context.Request.RawUrl == "/lastproduction")
+            else if (context.Request.RawUrl.StartsWith("/lastproduction"))
             {
                 context.Response.ContentType = "image/jpeg";
                 context.Response.AddHeader("Cache-control", "no-cache");

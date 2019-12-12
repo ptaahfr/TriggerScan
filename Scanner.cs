@@ -200,7 +200,7 @@ namespace TriggerScan
                         Arguments = $"/SCAN \"{deviceName}\" \"{destPath}\" {dpi.ToString(CultureInfo.InvariantCulture)} {widthMM.ToString(CultureInfo.InvariantCulture)} {heightMM.ToString(CultureInfo.InvariantCulture)}",
                         RedirectStandardError = true,
                         RedirectStandardOutput = true,
-                        UseShellExecute = false
+                        UseShellExecute = false,
                     };
                     process.ErrorDataReceived += (s, e) =>
                     {
@@ -211,6 +211,7 @@ namespace TriggerScan
                         if (e.Data != null) LastProductionFileName = e.Data;
                     };
                     process.Start();
+                    process.PriorityClass = ProcessPriorityClass.RealTime;
                     process.BeginOutputReadLine();
                     process.BeginErrorReadLine();
                     process.WaitForExit();
